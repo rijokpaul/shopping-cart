@@ -1,0 +1,112 @@
+$primary: #28a745;
+
+@import "node_modules/bootstrap/scss/bootstrap";
+// @import "@/css/main"
+
+.primary-btn {
+    background-color: transparent;
+    border: 1px solid #1E1E1E;
+    color: #1E1E1E;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 14px 20px;
+    transition: all 400ms ease;
+    &.full-width-btn {
+        width: 100%;
+    }
+    &:hover {
+        background-color: #1E1E1E;
+        color: #FFF;
+    }
+}
+
+
+.custom-radio-group {
+    display: flex;
+    .custom-radio-item {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin: 0 5px 0 0;
+        input[type="radio"] {
+            display: none;
+        }
+
+        label {
+            cursor: pointer;
+            position: relative;
+            font-size: 12px;
+        }
+
+        label::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: inherit;
+            // border: 2px solid #fff;
+            border-radius: 50%;
+            top: 50%;
+            margin-top: -6px;
+            transform: translateY(-50%);
+            transition: border-color 400ms ease;
+        }
+
+        label::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FFF;
+            // border: 2px solid $primary;
+            border-radius: 50%;
+            top: 50%;
+            margin-top: -6px;
+            transform: translateY(-50%) scale(0);
+            transition: transform 400ms ease;
+        }
+
+        input[type="radio"]:checked+label::before {
+            // border-color: $primary;
+        }
+
+        input[type="radio"]:checked+label::after {
+            transform: translateY(-50%) scale(0.40);
+        }
+
+    }
+    &.custom-radio-type-square {
+        .custom-radio-item {
+            width: 30px;
+            height: 30px;
+            label {
+                color: #1E1E1E;
+            }
+            label::before {
+                width: 30px;
+                height: 30px;
+                // background-color: #FFF;
+                border: 1px solid #1E1E1E;
+                border-radius: 0%;
+            }
+    
+            label::after {
+                // width: 30px;
+                // height: 30px;
+                // background-color: #1E1E1E;
+                // border-radius: 0%;
+                display: none;
+            }
+    
+            input[type="radio"]:checked+label::before {
+                // border-color: $primary;
+            }
+    
+            input[type="radio"]:checked+label::after {
+                // transform: translateY(-50%) scale(0.40);
+            }
+        }
+    }
+}
