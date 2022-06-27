@@ -1,6 +1,6 @@
 <template>
   <div class="product-list-item" v-if="product">
-    <div class="product-list-item-image" v-if="selectedVariant">
+    <div class="product-list-item-image" v-if="selectedVariant" style="display: block; opacity: 0.1">
       <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant.featured_image.src" />
       <img src="../../assets/images/image-1.png" alt="" v-else />
     </div>
@@ -57,47 +57,17 @@
             </div>
           </div>
         </div> -->
-      <div class="product-list-item-variations">
-        <div class="variation-list variation-type-1">
-          <ul>
-            <li class="active-variation">
-              <button style="background-color: #008c9c"></button>
-            </li>
-            <li>
-              <button style="background-color: #686868"></button>
-            </li>
-            <li>
-              <button style="background-color: #122230"></button>
-            </li>
-            <li>
-              <button style="background-color: #646f78"></button>
-            </li>
-            <li>
-              <button style="background-color: #bb0000"></button>
-            </li>
-          </ul>
-        </div>
-        <div class="variation-list variation-type-2">
-          <ul>
-            <li class="active-variation">
-              <button>XS</button>
-            </li>
-            <li>
-              <button>S</button>
-            </li>
-            <li>
-              <button>M</button>
-            </li>
-            <li>
-              <button>L</button>
-            </li>
-            <li>
-              <button>XL</button>
+      <div class="product-list-item-variations" v-if="variants.length > 0">
+        <div class="variation-list" :class="{'variation-type-1': variant.name === 'Color', 'variation-type-2': variant.name === 'Size'}" v-for="(variant, index) in variants" :key="index">
+          <ul v-if="variant.values && variant.values.length > 0">
+            <li :class="{'active-variation': (getSelectedCombination.option1 === item || getSelectedCombination.option2 === item)}" v-for="(item, innerIndex) in variant.values" :key="innerIndex">
+              <button :style="`background-color: ${item}`" v-if="variant.name === 'Color'" @click="selectVariant(item, variant.position)"></button>
+              <button v-else-if="variant.name === 'Size'" @click="selectVariant(item, variant.position)">{{item}}</button>
             </li>
           </ul>
         </div>
       </div>
-      <div class="product-list-item-action">
+      <div class="product-list-item-action" style="opacity: 0">
         <button class="primary-btn full-width-btn">Add to Cart</button>
       </div>
       <!-- </form> -->
@@ -105,6 +75,7 @@
   </div>
 </template>
 <script>
+import VariationUtils from '../../utils/variationUtil'
 export default {
   name: "ProductListItem",
   props: {
@@ -113,11 +84,42 @@ export default {
   data() {
     return {
       selectedVariant: undefined,
+      variants: [],
+      variantUtil: null,
+      selectedCombination: undefined,
     };
   },
   mounted() {
     if(this.product) {
       this.selectedVariant = this.product.variants[0];
+      console.log(this.selectedVariant)
+      this.variantUtil = new VariationUtils({
+        product: this.product
+      })
+      
+      this.variants = this.variantUtil.getVariations();
+      this.selectedCombination = {
+        option1: this.selectedVariant.option1,
+        option2: this.selectedVariant.option2,
+      }
+      // console.log(this.variants)
+
+    }
+  },
+  methods: {
+    selectVariant(selected, position) {
+      if(position === 1) {
+        this.selectedCombination.option1 = selected;
+      } else if(position === 2) {
+        this.selectedCombination.option2 = selected;
+      }
+      this.selectedVariant = this.variantUtil.selectVariant(this.selectedCombination);
+      console.log(this.selectedVariant)
+    },
+  },
+  computed: {
+    getSelectedCombination() {
+      return this.selectedCombination
     }
   },
 };
@@ -165,6 +167,7 @@ export default {
             position: relative;
             border: 0px none;
             transition: all 400ms ease;
+            box-shadow: 0px 0px 5px 2px rgba(#000, 0.2);
             &::after {
               content: "";
               position: absolute;

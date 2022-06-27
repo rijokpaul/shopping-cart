@@ -39,7 +39,8 @@ export default {
             this.products = products.filter(product => product.variants.length > 1).slice(0, 4)
           }
           // console.log(response.data);
-          console.log(this.products);
+          // console.log(this.products);
+          // console.log(JSON.stringify(this.products));
         })
         .catch((error) => {
           throw error.response.data;
