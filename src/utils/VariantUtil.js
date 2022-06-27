@@ -1,4 +1,4 @@
-class VariationUtils {
+class VariantUtil {
     constructor({product}) {
         this.product = product
     }
@@ -16,4 +16,4 @@ class VariationUtils {
 
 }
 
-module.exports = VariationUtils
+module.exports = VariantUtil
