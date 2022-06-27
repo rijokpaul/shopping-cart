@@ -36,4 +36,17 @@ export default {
     }
   }
 }
+body.nav-visible {
+	overflow: hidden;
+}
+body.nav-visible:before {
+	position: absolute;
+	content: "";
+	background: rgba(34,31,32,0.55);
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+  z-index: 9;
+}
 </style>
