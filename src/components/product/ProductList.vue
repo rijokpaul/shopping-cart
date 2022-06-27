@@ -7,17 +7,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
-        <ProductListItem></ProductListItem>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
-        <ProductListItem></ProductListItem>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
-        <ProductListItem></ProductListItem>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
-        <ProductListItem></ProductListItem>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-3" v-for="product in products" :key="product.id">
+        <ProductListItem :product="product"></ProductListItem>
       </div>
     </div>
   </div>
@@ -43,11 +34,11 @@ export default {
       return axios
         .get("products.json")
         .then((response) => {
-          const products = response.data
+          const products = response.data.products
           if(products.length > 0) {
-            this.products = products.filter(product => product.variants.length > 0).slice(0, 4)
+            this.products = products.filter(product => product.variants.length > 1).slice(0, 4)
           }
-          console.log(response.data);
+          // console.log(response.data);
           console.log(this.products);
         })
         .catch((error) => {

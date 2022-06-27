@@ -1,10 +1,11 @@
 <template>
-  <div class="product-list-item">
-    <div class="product-list-item-image">
-      <img src="../../assets/images/image-1.png" alt="" />
+  <div class="product-list-item" v-if="product">
+    <div class="product-list-item-image" v-if="selectedVariant">
+      <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant.featured_image.src" />
+      <img src="../../assets/images/image-1.png" alt="" v-else />
     </div>
     <div class="product-list-item-title">
-      <h4>Small Noami</h4>
+      <h4 v-if="product.title">{{product.title}}</h4>
       <span>$74.99</span>
     </div>
     <div class="product-list-item-action">
@@ -106,7 +107,19 @@
 <script>
 export default {
   name: "ProductListItem",
-  
+  props: {
+    product: Object,
+  },
+  data() {
+    return {
+      selectedVariant: undefined,
+    };
+  },
+  mounted() {
+    if(this.product) {
+      this.selectedVariant = this.product.variants[0];
+    }
+  },
 };
 </script>
 <style scoped lang="scss">
