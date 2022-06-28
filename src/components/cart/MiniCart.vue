@@ -21,7 +21,7 @@
         <div class="mini-cart-item" v-for="(item, index) in getCartItems" :key="index">
           <div class="mini-cart-image">
             <a href="#">
-              <img :src="item.image" :alt="item.name" style="opacity: 0.1"/>
+              <img :src="item.image" :alt="item.name" style="opacity: 1"/>
             </a>
           </div>
           <div class="item-price">
