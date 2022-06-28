@@ -6,6 +6,7 @@
       </a> -->
       <button class="mini-cart-btn" @click="openMiniCart">
         <img src="../../assets/images/shopping-bag.svg" alt="">
+        <span class="notify">{{getCartItems.length}}</span>
       </button>
     </div>
     <MiniCart v-if="$miniCart.status" @close-cart="closeMiniCart"></MiniCart>
@@ -39,6 +40,11 @@ export default {
       this.now = Date.now();
     },
   },
+  computed: {
+    getCartItems() {
+      return this.$cart.cartItems;
+    },
+  },
   watch: {
     '$miniCart': {
       handler (value) {
@@ -51,7 +57,7 @@ export default {
       },
       deep: true,
     },
-  }
+  },
 };
 </script>
 <style scoped lang="scss">
@@ -67,5 +73,19 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
+  span {
+    width: 16px;
+    height: 16px;
+    border-radius: 100px;
+    background: #ffffff;
+    display: inline-block;
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    font-weight: 500;
+    color: #1E1E1E;
+    position: absolute;
+    bottom: 10px;
+  }
 }
 </style>
