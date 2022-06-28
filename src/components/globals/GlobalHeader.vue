@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center" :data-now="now">
     <div class="col-auto">
       <!-- <a href="#" class="logo">
         <img src="../../assets/images/HULK-logo.svg" alt="">
@@ -8,7 +8,7 @@
         <img src="../../assets/images/shopping-bag.svg" alt="">
       </button>
     </div>
-    <MiniCart v-if="showMinCart" @close-cart="closeMiniCart"></MiniCart>
+    <MiniCart v-if="$miniCart.status" @close-cart="closeMiniCart"></MiniCart>
   </div>
 </template>
 <script>
@@ -20,6 +20,7 @@ export default {
   },
   data() {
     return {
+      now: Date.now(),
       showMinCart: false,
     };
   },
@@ -28,14 +29,29 @@ export default {
   },
   methods: {
     openMiniCart() {
-      this.showMinCart = true;
+      this.$miniCart.status = true;
       document.body.classList.add("nav-visible")
+      this.now = Date.now();
     },
     closeMiniCart() {
-      this.showMinCart = false;
+      this.$miniCart.status = false;
       document.body.classList.remove("nav-visible")
+      this.now = Date.now();
     },
   },
+  watch: {
+    '$miniCart': {
+      handler (value) {
+        if(value.status === true) {
+          document.body.classList.add("nav-visible")
+        } else {
+          document.body.classList.remove("nav-visible")
+        }
+        this.now = Date.now();
+      },
+      deep: true,
+    },
+  }
 };
 </script>
 <style scoped lang="scss">
