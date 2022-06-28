@@ -1,8 +1,9 @@
 <template>
   <div class="product-list-item" v-if="product">
-    <div class="product-list-item-image" style="display: block; opacity: 1">
-      <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant && selectedVariant.featured_image.src" />
-      <img src="../../assets/images/image-1.png" alt="" v-else />
+    <div class="product-list-item-image" style="display: block; opacity: 0.1">
+      <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant && selectedVariant.featured_image.src" @load="onImgLoad"/>
+      <img src="../../assets/images/image-1.png" alt="" v-else @load="onImgLoad"/>
+      <Loading v-if="loading"></Loading>
     </div>
     <div class="product-list-item-title">
       <h4 v-if="product.title">{{product.title}}</h4>
@@ -68,7 +69,7 @@
         </div>
       </div>
       <div class="product-list-item-action" style="opacity: 1">
-        <button class="primary-btn full-width-btn" v-if="selectedVariant" @click="addToCart(selectedVariant)">Add to Cart</button>
+        <button class="primary-btn full-width-btn" :disabled="selectedVariant === undefined" @click="addToCart(selectedVariant)">Add to Cart</button>
       </div>
       <!-- </form> -->
     </div>
@@ -76,11 +77,15 @@
 </template>
 <script>
 import VariantUtil from '../../utils/VariantUtil';
+import Loading from '../globals/Loading';
 // import Cart from '../../utils/Cart'
 export default {
   name: "ProductListItem",
   props: {
     product: Object,
+  },
+  components: {
+    Loading,
   },
   data() {
     return {
@@ -88,20 +93,16 @@ export default {
       variants: [],
       variantUtil: null,
       selectedCombination: undefined,
+      loading: true,
     };
   },
   mounted() {
     if(this.product) {
       this.selectedVariant = this.product.variants[0];
-      console.log(this.selectedVariant)
       this.variantUtil = new VariantUtil({
         product: this.product
       })
 
-      console.log("===========cart--items==========")
-      console.log(this.$cart.cartItems)
-      console.log("===========cart--items==========")
-      
       this.variants = this.variantUtil.getVariations();
       this.selectedCombination = {
         option1: this.selectedVariant.option1,
@@ -113,6 +114,7 @@ export default {
   },
   methods: {
     selectVariant(selected, position) {
+      this.loading = true;
       if(position === 1) {
         this.selectedCombination.option1 = selected;
       } else if(position === 2) {
@@ -124,6 +126,10 @@ export default {
     addToCart(product) {
       product['name'] = this.product.title;
       this.$cart.addToCart(product);
+      this.$miniCart.status = true;
+    },
+    onImgLoad() {
+      this.loading = false;
     },
   },
   computed: {
@@ -138,6 +144,8 @@ export default {
   display: flex;
   flex-direction: column;
   .product-list-item-image {
+    position: relative;
+    min-height: 375px;
     img {
       // max-width: 100%;
       width: 100%;
