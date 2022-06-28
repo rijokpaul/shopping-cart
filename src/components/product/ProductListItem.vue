@@ -1,7 +1,7 @@
 <template>
   <div class="product-list-item" v-if="product">
-    <div class="product-list-item-image" v-if="selectedVariant" style="display: block; opacity: 0.1">
-      <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant.featured_image.src" />
+    <div class="product-list-item-image" style="display: block; opacity: 1">
+      <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant && selectedVariant.featured_image.src" />
       <img src="../../assets/images/image-1.png" alt="" v-else />
     </div>
     <div class="product-list-item-title">
@@ -67,15 +67,16 @@
           </ul>
         </div>
       </div>
-      <div class="product-list-item-action" style="opacity: 0">
-        <button class="primary-btn full-width-btn">Add to Cart</button>
+      <div class="product-list-item-action" style="opacity: 1">
+        <button class="primary-btn full-width-btn" v-if="selectedVariant" @click="addToCart(selectedVariant)">Add to Cart</button>
       </div>
       <!-- </form> -->
     </div>
   </div>
 </template>
 <script>
-import VariationUtils from '../../utils/variationUtil'
+import VariantUtil from '../../utils/VariantUtil';
+// import Cart from '../../utils/Cart'
 export default {
   name: "ProductListItem",
   props: {
@@ -93,9 +94,13 @@ export default {
     if(this.product) {
       this.selectedVariant = this.product.variants[0];
       console.log(this.selectedVariant)
-      this.variantUtil = new VariationUtils({
+      this.variantUtil = new VariantUtil({
         product: this.product
       })
+
+      console.log("===========cart--items==========")
+      console.log(this.$cart.cartItems)
+      console.log("===========cart--items==========")
       
       this.variants = this.variantUtil.getVariations();
       this.selectedCombination = {
@@ -115,6 +120,10 @@ export default {
       }
       this.selectedVariant = this.variantUtil.selectVariant(this.selectedCombination);
       console.log(this.selectedVariant)
+    },
+    addToCart(product) {
+      product['name'] = this.product.title;
+      this.$cart.addToCart(product);
     },
   },
   computed: {
