@@ -20,6 +20,10 @@ $primary: #28a745;
         background-color: #1E1E1E;
         color: #FFF;
     }
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 }
 
 
