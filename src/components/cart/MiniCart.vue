@@ -16,33 +16,25 @@
       </svg>
     </a>
     <div class="cart-top">
-      <h3>your bag <i>(2 item)</i></h3>
-      <div class="mini-cart-container">
-        <div class="mini-cart-item">
+      <h3>your bag <i>({{getCartItems.length}} {{(getCartItems.length > 1 ? 'items': 'item')}})</i></h3>
+      <div class="mini-cart-container" v-if="getCartItems.length > 0">
+        <div class="mini-cart-item" v-for="(item, index) in getCartItems" :key="index">
           <div class="mini-cart-image">
             <a href="#">
-              <img src="../../assets/images/prod1.png" alt="" />
+              <img :src="item.image" :alt="item.name" />
             </a>
           </div>
           <div class="item-price">
-            <a href="#">
-              <h4>Small Noami</h4>
-              <span>Color : Grey</span>
-              <div class="qty-price">
-                <div class="qty">
-                  <span class="minus">-</span>
-                  <input
-                    type="number"
-                    class="count"
-                    name="qty"
-                    value="1"
-                    disabled=""
-                  />
-                  <span class="plus">+</span>
-                </div>
-                <span class="price">$74.99</span>
+            <h4>{{item.name}}</h4>
+            <span>Color : Grey</span>
+            <div class="qty-price">
+              <div class="qty qty-action-block">
+                <button @click="$cart.updateQuantity(item, 'down', (item.quantity - 1))" :disabled="item.quantity <= 1"><span class="minus">-</span></button>
+                <span class="count">{{item.quantity}}</span>
+                <button @click="$cart.updateQuantity(item, 'up', (item.quantity + 1))"><span class="plus">+</span></button>
               </div>
-            </a>
+              <span class="price">${{item.price}}</span>
+            </div>
           </div>
           <div class="remove-from-cart">
             <a href="#">
@@ -62,7 +54,9 @@
             </a>
           </div>
         </div>
-        <div class="mini-cart-item">
+
+
+        <!-- <div class="mini-cart-item">
           <div class="mini-cart-image">
             <a href="#">
               <img src="../../assets/images/prod2.png" alt="" />
@@ -105,14 +99,14 @@
               </svg>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="mini-cart-sub-total">
       <div class="d-flex">
         <h2>subtotal</h2>
         <div class="sub-total">
-          <span class="price">$131.98</span>
+          <span class="price">${{getCartTotal}}</span>
         </div>
       </div>
       <div class="mini-cart-btn">
@@ -134,7 +128,15 @@ export default {
     closeMiniCart() {
       this.$emit('close-cart');
     }
-  }
+  },
+  computed: {
+    getCartItems() {
+      return this.$cart.cartItems;
+    },
+    getCartTotal() {
+      return this.$cart.cartTotal;
+    },
+  },
 };
 </script>
 <style scoped lang="scss">
@@ -232,6 +234,9 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	margin: 20px 0 0;
+}
+.qty-action-block button {
+  border: 0 none;
 }
 .mini-cart-sub-total {
 	display: flex;
