@@ -7,7 +7,8 @@
     </div>
     <div class="product-list-item-title">
       <h4 v-if="product.title">{{product.title}}</h4>
-      <span>$74.99</span>
+      <span v-if="selectedVariant && selectedVariant.price">${{selectedVariant.price}}</span>
+      <span v-else>---</span>
     </div>
     <div class="product-list-item-action">
       <!-- <form action=""> -->
