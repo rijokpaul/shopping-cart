@@ -26,7 +26,9 @@
           </div>
           <div class="item-price">
             <h4>{{item.name}}</h4>
-            <span>Color : Grey</span>
+            <div class="cart-variants" v-if="item.variants.length > 0">
+              <span v-for="(variant, index) in item.variants" :key="index">{{variant.label}} : {{variant.value}}</span>
+            </div>
             <div class="qty-price">
               <div class="qty qty-action-block">
                 <button @click="updateCartQuantity(item, 'down', (item.quantity - 1))" :disabled="item.quantity <= 1"><span class="minus">-</span></button>
@@ -74,7 +76,7 @@
         </p>
       </div>
     </div>
-    <div class="min-cart-no-data">
+    <div class="min-cart-no-data" v-else>
       <p>Looks like your shopping bag is empty.</p>
       <p>Start adding items!</p>
     </div>
@@ -203,6 +205,11 @@ export default {
 	font-weight: bold;
 	margin-bottom: 5px;
 	text-transform: uppercase;
+}
+.mini-cart-container .mini-cart-item .cart-variants {
+  display: flex;
+  flex-direction: column;
+  
 }
 .mini-cart-container .mini-cart-item .item-price span {
 	color: #221F20;
