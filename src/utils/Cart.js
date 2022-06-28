@@ -6,7 +6,8 @@ class Cart {
 
     addToCart(product) {
         const isExisting = this.cartItems.some(item => item.id === product.id);
-        console.log(isExisting)
+        // console.log(product)
+        product['unitPrice'] = parseFloat(product.price);
         if(isExisting) {
             this.updateQuantity(product, 'up')
         } else {
@@ -16,6 +17,7 @@ class Cart {
                 quantity: 1,
                 image: product.featured_image.src,
                 price: parseFloat(product.price),
+                unitPrice: parseFloat(product.price),
                 variant: 'Test'
             }
             this.cartItems.push(cartItem);
@@ -29,13 +31,15 @@ class Cart {
     }
 
     updateQuantity(product, type, quantity) {
-        const selectedItem = this.cartItems.find(item => item.id === product.id)
-        if(quantity) {
-            selectedItem.quantity = quantity;
-        } else {
-            selectedItem.quantity = (type === 'up' ? selectedItem.quantity += 1 : selectedItem.quantity -= 1);
-        }
-        this.total();
+      const selectedItem = this.cartItems.find(item => item.id === product.id)
+      if(quantity) {
+          selectedItem.quantity = quantity;
+          selectedItem.price = quantity * product.unitPrice;
+      } else {
+          selectedItem.quantity = (type === 'up' ? selectedItem.quantity += 1 : selectedItem.quantity -= 1);
+          selectedItem.price = selectedItem.quantity * product.unitPrice;
+      }
+      this.total();
     }
 
     total() {
@@ -43,8 +47,12 @@ class Cart {
         for (let product of this.cartItems) {
             total += (product.price * product.quantity)
         }
-        this.cartTotal = total;
-        // return total
+        // this.cartTotal = total;
+        return total
+    }
+
+    getCartTotal() {
+      return this.total();
     }
 }
 
