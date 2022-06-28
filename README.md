@@ -1,4 +1,8 @@
-# shopping-cart
+# vue.js shopping cart with ES6
+
+example of shopping cart implemented in Vue and ES6
+
+for demo [click here](https://devrp-shopping.netlify.app/)
 
 ## Project setup
 ```
