@@ -1,6 +1,6 @@
 <template>
-  <div class="drop-cart active">
-    <a href="#" class="close-cart" @click="closeMiniCart"
+  <div class="drop-cart active" :data-now="now">
+    <button class="close-cart" @click="closeMiniCart"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
@@ -14,14 +14,14 @@
           fill="#221f20"
         />
       </svg>
-    </a>
-    <div class="cart-top">
+    </button>
+    <div class="cart-top" v-if="getCartItems.length > 0">
       <h3>your bag <i>({{getCartItems.length}} {{(getCartItems.length > 1 ? 'items': 'item')}})</i></h3>
       <div class="mini-cart-container" v-if="getCartItems.length > 0">
         <div class="mini-cart-item" v-for="(item, index) in getCartItems" :key="index">
           <div class="mini-cart-image">
             <a href="#">
-              <img :src="item.image" :alt="item.name" />
+              <img :src="item.image" :alt="item.name" style="opacity: 0.1"/>
             </a>
           </div>
           <div class="item-price">
@@ -29,15 +29,15 @@
             <span>Color : Grey</span>
             <div class="qty-price">
               <div class="qty qty-action-block">
-                <button @click="$cart.updateQuantity(item, 'down', (item.quantity - 1))" :disabled="item.quantity <= 1"><span class="minus">-</span></button>
+                <button @click="updateCartQuantity(item, 'down', (item.quantity - 1))" :disabled="item.quantity <= 1"><span class="minus">-</span></button>
                 <span class="count">{{item.quantity}}</span>
-                <button @click="$cart.updateQuantity(item, 'up', (item.quantity + 1))"><span class="plus">+</span></button>
+                <button @click="updateCartQuantity(item, 'up', (item.quantity + 1))"><span class="plus">+</span></button>
               </div>
               <span class="price">${{item.price}}</span>
             </div>
           </div>
           <div class="remove-from-cart">
-            <a href="#">
+            <button @click="removeCartItem(item.id)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="11"
@@ -51,62 +51,17 @@
                   fill="#221f20"
                 />
               </svg>
-            </a>
+            </button>
           </div>
         </div>
 
-
-        <!-- <div class="mini-cart-item">
-          <div class="mini-cart-image">
-            <a href="#">
-              <img src="../../assets/images/prod2.png" alt="" />
-            </a>
-          </div>
-          <div class="item-price">
-            <a href="#">
-              <h4>Stormy</h4>
-              <span>Color : Green</span>
-              <div class="qty-price">
-                <div class="qty">
-                  <span class="minus">-</span>
-                  <input
-                    type="number"
-                    class="count"
-                    name="qty"
-                    value="1"
-                    disabled=""
-                  />
-                  <span class="plus">+</span>
-                </div>
-                <span class="price">$56.99</span>
-              </div>
-            </a>
-          </div>
-          <div class="remove-from-cart">
-            <a href="#">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="11"
-                height="11"
-                viewBox="0 0 11 11"
-              >
-                <path
-                  id="close-line"
-                  d="M14.249,13.483l4.559-4.547a.549.549,0,0,0-.775-.773L13.473,12.71,8.914,8.157a.552.552,0,0,0-.781.779L12.7,13.483,8.133,18.031a.549.549,0,1,0,.775.773l4.565-4.547L18.033,18.8a.549.549,0,0,0,.775-.773Z"
-                  transform="translate(-7.94 -7.996)"
-                  fill="#221f20"
-                />
-              </svg>
-            </a>
-          </div>
-        </div> -->
       </div>
     </div>
-    <div class="mini-cart-sub-total">
+    <div class="mini-cart-sub-total" v-if="getCartItems.length > 0">
       <div class="d-flex">
         <h2>subtotal</h2>
         <div class="sub-total">
-          <span class="price">${{getCartTotal}}</span>
+          <span class="price">${{cartTotal}}</span>
         </div>
       </div>
       <div class="mini-cart-btn">
@@ -119,15 +74,38 @@
         </p>
       </div>
     </div>
+    <div class="min-cart-no-data">
+      <p>Looks like your shopping bag is empty.</p>
+      <p>Start adding items!</p>
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: "MiniCart",
+  data() {
+    return {
+      now: Date.now(),
+      cartTotal: 0,
+    };
+  }, 
+  mounted() {
+    this.cartTotal = this.$cart.getCartTotal();
+  }, 
   methods: {
     closeMiniCart() {
       this.$emit('close-cart');
-    }
+    },
+    updateCartQuantity(product, type, quantity) {
+      this.$cart.updateQuantity(product, type, quantity)
+      this.cartTotal = this.$cart.getCartTotal();
+      this.now = Date.now();
+    },
+    removeCartItem(productId) {
+      this.$cart.removeFromCart(productId);
+      this.cartTotal = this.$cart.getCartTotal();
+      this.now = Date.now();
+    },
   },
   computed: {
     getCartItems() {
@@ -137,6 +115,12 @@ export default {
       return this.$cart.cartTotal;
     },
   },
+  '$miniCart': {
+      handler () {
+        this.now = Date.now();
+      },
+      deep: true,
+    },
 };
 </script>
 <style scoped lang="scss">
@@ -161,13 +145,14 @@ export default {
 
 
 .drop-cart.active {
-	z-index: 10;
+	z-index: 110;
 	opacity: 1;
 	visibility: visible;
 }
 .close-cart {
 	position: absolute;
 	right: 30px;
+  border: 0 none;
 }
 
 .drop-cart h3 {
@@ -227,6 +212,9 @@ export default {
 .remove-from-cart {
   position: absolute;
   right: 0;
+}
+.remove-from-cart button {
+  border: 0 none;
 }
 .qty-price {
 	display: -webkit-box;
@@ -307,19 +295,18 @@ export default {
 	justify-content: space-between;
     align-items: center;
 }
-input.count {
-	width: 2%;
-	border: 0px;
-	min-width: 29px;
-	background: transparent;
-	text-align: center;
-	padding: 0;
-	appearance: textfield;
-}
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+.min-cart-no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  padding: 50px;
+  width: 100%;
+  height: 100%;
+  p {
+    margin-bottom: 0.2rem;
+  }
 }
 
 </style>

@@ -8,6 +8,9 @@ Vue.config.productionTip = false
 
 const cart = new Cart();
 Vue.prototype.$cart = cart
+Vue.prototype.$miniCart = Vue.observable({
+  status: false,
+});
 
 new Vue({
   render: h => h(App),
