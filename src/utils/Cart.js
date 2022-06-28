@@ -18,7 +18,16 @@ class Cart {
                 image: product.featured_image.src,
                 price: parseFloat(product.price),
                 unitPrice: parseFloat(product.price),
-                variant: 'Test'
+                variants: [
+                    {
+                        label: "Color",
+                        value: product.option1,
+                    },
+                    {
+                        label: "Size",
+                        value: product.option2,
+                    },
+                ]
             }
             this.cartItems.push(cartItem);
             this.total();
@@ -45,7 +54,7 @@ class Cart {
     total() {
         let total = 0
         for (let product of this.cartItems) {
-            total += (product.price * product.quantity)
+            total += (product.unitPrice * product.quantity)
         }
         // this.cartTotal = total;
         return total
