@@ -18,6 +18,7 @@
     <div class="cart-top" v-if="getCartItems.length > 0">
       <h3>your bag <i>({{getCartItems.length}} {{(getCartItems.length > 1 ? 'items': 'item')}})</i></h3>
       <div class="mini-cart-container" v-if="getCartItems.length > 0">
+        <!-- <transition-group name="fade" tag="div"> -->
         <div class="mini-cart-item" v-for="(item, index) in getCartItems" :key="index">
           <div class="mini-cart-image">
             <a href="#">
@@ -56,7 +57,7 @@
             </button>
           </div>
         </div>
-
+        <!-- </transition-group> -->
       </div>
     </div>
     <div class="mini-cart-sub-total" v-if="getCartItems.length > 0">
@@ -126,6 +127,36 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter,
+    .fade-leave-to {
+      opacity: 0;
+    }
+
+    .fade-enter {
+      opacity: 0.7;
+      // transform: translateY(30%);
+    }
+
+    .fade-leave-to {
+      opacity: 0.1;
+      // transform: translateX(300%);
+    }
+
+  
+    .fade-leave-active {
+      position: absolute;
+    }
+
 .drop-cart {
 	width: 450px;
 	height: 100vh;
@@ -143,6 +174,9 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	flex-direction:column;
+  @media only screen and (max-width: 520px) {
+    width: 360px;
+  }
 }
 
 
@@ -155,6 +189,7 @@ export default {
 	position: absolute;
 	right: 30px;
   border: 0 none;
+  background: transparent;
 }
 
 .drop-cart h3 {
@@ -182,6 +217,7 @@ export default {
 	padding-top: 25px;
 	padding-bottom: 25px;
 	position: relative;
+  transition: all 300ms ease-in;
 }
 .mini-cart-container .mini-cart-item:first-child {
 	border: none;
@@ -222,6 +258,7 @@ export default {
 }
 .remove-from-cart button {
   border: 0 none;
+  background: transparent;
 }
 .qty-price {
 	display: -webkit-box;
@@ -232,6 +269,7 @@ export default {
 }
 .qty-action-block button {
   border: 0 none;
+  background: transparent;
 }
 .mini-cart-sub-total {
 	display: flex;

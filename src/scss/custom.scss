@@ -13,6 +13,7 @@ $primary: #28a745;
     font-size: 13px;
     padding: 14px 20px;
     transition: all 400ms ease;
+    text-decoration: none;
     &.full-width-btn {
         width: 100%;
     }
@@ -23,6 +24,10 @@ $primary: #28a745;
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      &:hover {
+        background: inherit;
+        color: inherit;
+      }
     }
 }
 

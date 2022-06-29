@@ -1,9 +1,9 @@
 <template>
   <div class="row justify-content-center" :data-now="now">
     <div class="col-auto">
-      <a href="#" class="logo">
+      <!-- <a href="#" class="logo">
         <img src="../../assets/images/HULK-logo.svg" alt="">
-      </a>
+      </a> -->
       <button class="mini-cart-btn" @click="openMiniCart">
         <img src="../../assets/images/shopping-bag.svg" alt="">
         <span class="notify">{{getCartItems.length}}</span>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="overlay" @click="closeOverlay"></div>
+    <transition name="fade"><div class="overlay" @click="closeOverlay"></div></transition>
     <div class="wrapper">
       <ProductLayout></ProductLayout>
     </div>
@@ -45,17 +45,35 @@ export default {
 body.nav-visible {
 	overflow: hidden;
 }
-body.nav-visible {
+body {
   .overlay {
-  position: fixed;
-	content: "";
-	background: rgba(34,31,32,0.55);
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-  z-index: 100;
-  cursor: pointer;
-  }	
+    position: fixed;
+    content: "";
+    background: rgba(34,31,32,0.55);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  &.nav-visible {
+    .overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
