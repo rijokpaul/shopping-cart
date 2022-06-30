@@ -32,6 +32,7 @@ export default {
   padding: 40px 0;
   display: flex;
   justify-content: center;
+  overflow-x: hidden;
   .wrapper {
     max-width: 1278px;
     width: 100%;

@@ -1,6 +1,6 @@
 <template>
   <div class="product-list-item" v-if="product">
-    <div class="product-list-item-image" style="display: block; opacity: 0.1">
+    <div class="product-list-item-image" style="display: block; opacity: 1">
       <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant && selectedVariant.featured_image.src" @load="onImgLoad"/>
       <img src="../../assets/images/image-1.png" alt="" v-else @load="onImgLoad"/>
       <Loading v-if="loading"></Loading>

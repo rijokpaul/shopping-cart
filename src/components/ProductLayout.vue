@@ -2,7 +2,7 @@
   <div class="container">
     <GlobalHeader></GlobalHeader>
     <ProductList></ProductList>
-    <FeaturedContent style="display: none;"></FeaturedContent>
+    <FeaturedContent></FeaturedContent>
     <GlobalFooter></GlobalFooter>
   </div>
 </template>
