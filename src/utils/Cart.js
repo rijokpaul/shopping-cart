@@ -11,7 +11,6 @@ class Cart {
      */
     addToCart(product) {
         const isExisting = this.cartItems.some(item => item.id === product.id);
-        // console.log(product)
         product['unitPrice'] = parseFloat(product.price);
         if(isExisting) {
             this.updateQuantity(product, 'up')

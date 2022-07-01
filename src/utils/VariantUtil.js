@@ -16,14 +16,12 @@ class VariantUtil {
         })
       }
       return result;
-      // return (this.product.options !== undefined ? this.product.options : []);
     }
 
     /**
      * // Returns selected product variant
      */
     selectVariant(selectedCombination) {
-      console.log(selectedCombination);
       const result = this.product.variants.find(item => (item.option1 === selectedCombination.option1 && item.option2 === selectedCombination.option2))
       return result;
     }

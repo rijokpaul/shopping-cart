@@ -38,9 +38,6 @@ export default {
           if(products.length > 0) {
             this.products = products.filter(product => product.variants.length > 1).slice(0, 4)
           }
-          // console.log(response.data);
-          // console.log(this.products);
-          // console.log(JSON.stringify(this.products));
         })
         .catch((error) => {
           throw error.response.data;
@@ -50,7 +47,5 @@ export default {
 };
 </script>
 <style scoped>
-.card-widget {
-  /* margin-top: 20px; */
-}
+
 </style>

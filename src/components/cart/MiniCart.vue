@@ -18,11 +18,10 @@
     <div class="cart-top" v-if="getCartItems.length > 0">
       <h3>your bag <i>({{getCartItems.length}} {{(getCartItems.length > 1 ? 'items': 'item')}})</i></h3>
       <div class="mini-cart-container" v-if="getCartItems.length > 0">
-        <!-- <transition-group name="fade" tag="div"> -->
         <div class="mini-cart-item" v-for="(item, index) in getCartItems" :key="index">
           <div class="mini-cart-image">
             <a href="#">
-              <img :src="item.image" :alt="item.name" style="opacity: 1"/>
+              <img :src="item.image" :alt="item.name"/>
             </a>
           </div>
           <div class="item-price">
@@ -57,7 +56,6 @@
             </button>
           </div>
         </div>
-        <!-- </transition-group> -->
       </div>
     </div>
     <div class="mini-cart-sub-total" v-if="getCartItems.length > 0">

@@ -1,6 +1,6 @@
 <template>
   <div class="product-list-item" v-if="product">
-    <div class="product-list-item-image" style="display: block; opacity: 1">
+    <div class="product-list-item-image">
       <img :src="selectedVariant.featured_image.src" alt="" v-if="selectedVariant && selectedVariant.featured_image.src" @load="onImgLoad"/>
       <img src="../../assets/images/image-1.png" alt="" v-else @load="onImgLoad"/>
       <Loading v-if="loading"></Loading>
@@ -11,54 +11,6 @@
       <span v-else>---</span>
     </div>
     <div class="product-list-item-action">
-      <!-- <form action=""> -->
-      <!-- <div class="product-list-item-variations">
-          <div class="variation-list color-variations custom-radio-group custom-radio-type-rounded">
-            <div class="custom-radio-item">
-              <input type="radio" name="color" id="green" value="green" checked/>
-              <label for="green" style="background-color: #008c9c"></label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="color" id="dark-gray" value="dark-gray"/>
-              <label for="dark-gray" style="background-color: #686868"></label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="color" id="navy-blue" value="navy-blue"/>
-              <label for="navy-blue" style="background-color: #122230"></label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="color" id="light-gray" value="light-gray"/>
-              <label for="light-gray" style="background-color: #646f78"></label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="color" id="red" value="red"/>
-              <label for="red" style="background-color: #bb0000"></label>
-            </div>            
-          </div>
-
-          <div class="variation-list color-variations custom-radio-group custom-radio-type-square">
-            <div class="custom-radio-item">
-              <input type="radio" name="size" id="x-small" value="xs" checked/>
-              <label for="x-small">XS</label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="size" id="small" value="s" checked/>
-              <label for="small">S</label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="size" id="medium" value="m" checked/>
-              <label for="medium">M</label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="size" id="large" value="l" checked/>
-              <label for="large">L</label>
-            </div>
-            <div class="custom-radio-item">
-              <input type="radio" name="size" id="x-large" value="xl" checked/>
-              <label for="x-large">XL</label>
-            </div>
-          </div>
-        </div> -->
       <div class="product-list-item-variations" v-if="variants.length > 0">
         <div class="variation-list" :class="{'variation-type-1': variant.name === 'Color', 'variation-type-2': variant.name === 'Size'}" v-for="(variant, index) in variants" :key="index">
           <ul v-if="variant.values && variant.values.length > 0">
@@ -69,17 +21,15 @@
           </ul>
         </div>
       </div>
-      <div class="product-list-item-action" style="opacity: 1">
+      <div class="product-list-item-action">
         <button class="primary-btn full-width-btn" :disabled="selectedVariant === undefined" @click="addToCart(selectedVariant)">{{(selectedVariant === undefined ? 'Out of Stock' : 'Add to Cart')}}</button>
       </div>
-      <!-- </form> -->
     </div>
   </div>
 </template>
 <script>
 import VariantUtil from '../../utils/VariantUtil';
 import Loading from '../globals/Loading';
-// import Cart from '../../utils/Cart'
 export default {
   name: "ProductListItem",
   props: {
@@ -109,7 +59,6 @@ export default {
         option1: this.selectedVariant.option1,
         option2: this.selectedVariant.option2,
       }
-      // console.log(this.variants)
 
     }
   },
@@ -122,7 +71,6 @@ export default {
         this.selectedCombination.option2 = selected;
       }
       this.selectedVariant = this.variantUtil.selectVariant(this.selectedCombination);
-      console.log(this.selectedVariant)
     },
     addToCart(product) {
       product['name'] = this.product.title;
