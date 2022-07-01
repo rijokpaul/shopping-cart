@@ -22,6 +22,9 @@ This project was generated with [Vue CLI](https://github.com/vuejs/vue-cli) vers
 ### Estimated time and actual development time
  - Estimated hours were 14 hours being Vue 2 + Bootstrap 5. Project completed in 18 hours.
 
+### Pending points
+ - Not completed writing unit test cases.
+
 ## Project setup
 ```
 npm install
